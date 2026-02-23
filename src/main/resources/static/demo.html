@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunrise Bites POS - 展示入口</title>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: #F8FAFC;
+            color: #0F172A;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            padding: 2rem;
+            max-width: 800px;
+        }
+        h1 { font-size: 2.5rem; margin-bottom: 1rem; color: #F97316; }
+        p { color: #64748B; margin-bottom: 2rem; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #E2E8F0;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-color: #F97316;
+        }
+        .icon { font-size: 3rem; margin-bottom: 1rem; }
+        .title { font-weight: 700; font-size: 1.25rem; margin-bottom: 0.5rem; }
+        .desc { font-size: 0.9rem; color: #94A3B8; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🍳 Sunrise Bites POS</h1>
+        <p>歡迎來到現代化早餐店 POS 系統展示頁面。請選擇您要查看的介面：</p>
+        
+        <div class="grid">
+            <a href="/tablet/index.html" class="card">
+                <div class="icon">📱</div>
+                <div class="title">櫃檯平板 POS</div>
+                <div class="desc">店員操作介面：快速點餐、結帳、出單管理。</div>
+            </a>
+            <a href="/index.html" class="card">
+                <div class="icon">💬</div>
+                <div class="title">LINE LIFF 點餐</div>
+                <div class="desc">顧客手機介面：遠端預約、查看菜單、取餐通知。</div>
+            </a>
+            <a href="/admin/index.html" class="card">
+                <div class="icon">📊</div>
+                <div class="title">管理後台</div>
+                <div class="desc">店主管理介面：銷售分析、菜單維護、系統設定。</div>
+            </a>
+            <a href="/swagger-ui.html" class="card">
+                <div class="icon">📝</div>
+                <div class="title">API 文件</div>
+                <div class="desc">OpenAPI 3 / Swagger：技術文件與接口測試平台。</div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

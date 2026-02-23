@@ -1,0 +1,63 @@
+{
+  "name": "aphelion-desktop",
+  "private": true,
+  "version": "0.1.0",
+  "main": "main.js",
+  "scripts": {
+    "dev": "electron .",
+    "build:ui": "npm --prefix ..\\frontend\\admin-app run build",
+    "rebuild": "electron-rebuild -f -w better-sqlite3",
+    "pack:win": "npm run build:ui && npm run rebuild && electron-builder --win",
+    "pack:mac": "npm run build:ui && npm run rebuild && electron-builder --mac",
+    "pack:all": "npm run build:ui && npm run rebuild && electron-builder --win --mac",
+    "publish:win": "npm run build:ui && npm run rebuild && electron-builder --win --publish always",
+    "publish:mac": "npm run build:ui && npm run rebuild && electron-builder --mac --publish always",
+    "publish:all": "npm run build:ui && npm run rebuild && electron-builder --win --mac --publish always"
+  },
+  "dependencies": {
+    "better-sqlite3": "latest",
+    "electron-updater": "^6.3.9"
+  },
+  "devDependencies": {
+    "electron": "latest",
+    "electron-builder": "latest",
+    "electron-rebuild": "latest"
+  },
+  "build": {
+    "appId": "com.aphelion.apollo",
+    "productName": "Aphelion Apollo POS",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "../frontend/admin-app/dist",
+        "to": "app"
+      }
+    ],
+    "asar": true,
+    "publish": {
+      "provider": "github",
+      "owner": "anthropic",
+      "repo": "aphelion-apollo-pos"
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  }
+}

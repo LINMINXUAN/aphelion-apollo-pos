@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+@layer base {
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    @apply bg-sand-50 text-ink-900 antialiased;
+  }
+}
+
+@layer components {
+  .admin-card {
+    @apply rounded-2xl border border-sand-200 bg-white/80 shadow-soft backdrop-blur;
+  }
+
+  .admin-surface {
+    @apply rounded-2xl border border-sand-200 bg-white/70 shadow-soft;
+  }
+
+  .admin-chip {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold;
+  }
+
+  .admin-input {
+    @apply w-full rounded-xl border border-sand-200 bg-white/90 px-4 py-2 text-ink-900
+      placeholder:text-ink-400 focus:outline-none focus:ring-2 focus:ring-brand-200
+      focus:border-brand-300;
+  }
+
+  .admin-button {
+    @apply inline-flex items-center gap-2 rounded-xl px-4 py-2 font-medium transition-colors;
+  }
+
+  .admin-button-primary {
+    @apply bg-brand-500 text-white hover:bg-brand-600;
+  }
+
+  .admin-button-ghost {
+    @apply bg-sand-100 text-ink-700 hover:bg-sand-200;
+  }
+
+  .admin-button-danger {
+    @apply bg-rose-50 text-rose-700 hover:bg-rose-100;
+  }
+
+  .pos-card {
+    @apply bg-white/85 border border-sand-200 shadow-soft rounded-2xl overflow-hidden;
+  }
+
+  .pos-panel {
+    @apply bg-white/80 border border-sand-200 shadow-soft rounded-2xl;
+  }
+
+  .pos-pill {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold;
+  }
+
+  .pos-button {
+    @apply font-semibold py-3 px-6 rounded-xl transition-colors duration-150 active:scale-[0.98];
+  }
+
+  .pos-button-primary {
+    @apply bg-brand-500 text-white hover:bg-brand-600;
+  }
+
+  .pos-button-secondary {
+    @apply bg-sand-100 text-ink-700 hover:bg-sand-200 border border-sand-200;
+  }
+
+  .pos-button-danger {
+    @apply bg-rose-50 text-rose-700 hover:bg-rose-100;
+  }
+
+  .pos-input {
+    @apply w-full px-4 py-3 rounded-xl border border-sand-200 bg-white/90 
+      focus:outline-none focus:ring-2 focus:ring-brand-200;
+  }
+
+  .text-price {
+    @apply text-xl font-semibold text-ink-900;
+  }
+
+  .text-h1 {
+    @apply text-3xl font-semibold text-ink-900;
+  }
+
+  .skeleton {
+    @apply animate-pulse bg-sand-200/70;
+  }
+}
+
+@keyframes flash {
+  0% {
+    background-color: rgba(224, 138, 91, 0.18);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.animate-flash {
+  animation: flash 0.3s ease-out;
+}

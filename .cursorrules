@@ -1,0 +1,27 @@
+# 🚀 Aphelion Apollo POS - AI Coding Protocol (ClawCore-0)
+
+## 🎯 核心原則
+- **專注執行**：你負責具體的代碼實作、Bug 修復與 Feature 開發。
+- **減少廢話**：不需要向我回報冗長的解釋，直接輸出實作代碼。
+- **Build-First**：代碼改動後必須確保通過基礎編譯或 Lint。
+
+## 🛠 當前任務：代碼審查與資安加固
+請依序執行以下優化，完成後在根目錄建立 `REVIEW_DONE.md`：
+
+1. **後端資安鎖死**：
+   - 修改 `SecurityConfig.java`。
+   - 將 `.antMatchers("/api/admin/**").permitAll()` 改為真正的 `.hasRole("ADMIN")`。
+   - 確保所有 Admin 端點受 JWT 嚴格保護。
+
+2. **訂單邏輯強健化**：
+   - 審查 `OrderService.java`。
+   - 在 `placeOrder` 中加入庫存檢查邏輯（若商品 `available` 為 false 則拋出異常）。
+   - 確保 `PrintService` 的失敗不會導致訂單事務回滾（使用 try-catch 包覆副作用）。
+
+3. **前端效能優化**：
+   - 檢查 `cartStore.ts`。
+   - 確保 `addItem` 邏輯在高頻點擊時不會產生不必要的狀態重繪。
+
+## 📤 交付要求
+- 僅在代碼中留下必要的註釋。
+- 完成後只需回覆：「審查與修復已由 Cursor 完成」。

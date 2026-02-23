@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunrise Bites POS - 櫃檯平板</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="logo">🍳 Sunrise Bites</div>
+        <ul class="nav-menu" id="categoryMenu">
+            <!-- Categories will be rendered here -->
+            <li class="nav-item active" onclick="filterProducts('all')">顯示全部</li>
+        </ul>
+    </aside>
+
+    <main>
+        <div class="header-row">
+            <h2 id="currentCategoryTitle">所有產品</h2>
+            <div class="user-info">員工: 管理員</div>
+        </div>
+
+        <section class="product-grid" id="productGrid">
+            <!-- Products will be rendered here -->
+        </section>
+    </main>
+
+    <aside class="cart-panel">
+        <div class="cart-header">
+            <span>當前訂單</span>
+            <span>🛒</span>
+        </div>
+        
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items will be rendered here -->
+        </div>
+
+        <div class="checkout-section">
+            <div class="total-row">
+                <span>總計</span>
+                <span class="total-amount">$0</span>
+            </div>
+            <button class="checkout-btn" onclick="checkout()">結帳 (Checkout)</button>
+        </div>
+    </aside>
+
+    <script>
+        let allProducts = [];
+        let categories = [];
+        let cart = [];
+
+        async function init() {
+            await fetchCategories();
+            await fetchProducts();
+        }
+
+        async function fetchCategories() {
+            try {
+                const response = await fetch('/api/menu/categories');
+                const data = await response.json();
+                if (data.success) {
+                    categories = data.data;
+                    renderCategories();
+                }
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        }
+
+        async function fetchProducts() {
+            try {
+                const response = await fetch('/api/menu/products');
+                const data = await response.json();
+                if (data.success) {
+                    allProducts = data.data;
+                    renderProducts(allProducts);
+                }
+            } catch (error) {
+                console.error('Error fetching products:', error);
+            }
+        }
+
+        function renderCategories() {
+            const menu = document.getElementById('categoryMenu');
+            const items = categories.map(cat => `
+                <li class="nav-item" onclick="filterByCategory(this, '${cat.name}')">
+                    ${cat.name}
+                </li>
+            `).join('');
+            menu.innerHTML = `<li class="nav-item active" onclick="filterByCategory(this, 'all')">显示全部</li>` + items;
+        }
+
+        function filterByCategory(element, categoryName) {
+            // Update active state
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+
+            // Update title
+            document.getElementById('currentCategoryTitle').textContent = categoryName === 'all' ? '所有產品' : categoryName;
+
+            // Filter products
+            if (categoryName === 'all') {
+                renderProducts(allProducts);
+            } else {
+                const filtered = allProducts.filter(p => p.categoryName === categoryName);
+                renderProducts(filtered);
+            }
+        }
+
+        function renderProducts(products) {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = products.map(p => `
+                <div class="product-card" onclick="addToCart(${p.id}, '${p.name}', ${p.price})">
+                    <div class="product-info">
+                        <div class="product-name">${p.name}${!p.available ? ' <span style="color:red">(售完)</span>' : ''}</div>
+                        <div class="product-price">$${p.price}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addToCart(id, name, price) {
+            const existing = cart.find(item => item.id === id);
+            if (existing) {
+                existing.quantity++;
+            } else {
+                cart.push({ id, name, price, quantity: 1 });
+            }
+            updateCartUI();
+        }
+
+        function removeFromCart(index) {
+            if (cart[index].quantity > 1) {
+                cart[index].quantity--;
+            } else {
+                cart.splice(index, 1);
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const itemsList = document.getElementById('cartItems');
+            if (cart.length === 0) {
+                itemsList.innerHTML = '<div class="empty-cart-msg">尚未選取餐點</div>';
+            } else {
+                itemsList.innerHTML = cart.map((item, index) => `
+                    <div class="cart-item">
+                        <div class="item-name">
+                            <span>${item.name} x ${item.quantity}</span>
+                            <button class="remove-btn" onclick="removeFromCart(${index}); event.stopPropagation();">取消</button>
+                        </div>
+                        <div class="item-price">$${item.price * item.quantity}</div>
+                    </div>
+                `).join('');
+            }
+
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            document.querySelector('.total-amount').textContent = `$${total}`;
+        }
+
+        async function checkout() {
+            if (cart.length === 0) return alert('購物車是空的');
+
+            const orderRequest = {
+                tableNumber: "T1",
+                type: "DINE_IN",
+                items: cart.map(item => ({
+                    productId: item.id,
+                    quantity: item.quantity,
+                    modifiers: ""
+                }))
+            };
+
+            try {
+                const response = await fetch('/api/orders/checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderRequest)
+                });
+                const data = await response.json();
+                if (data.success) {
+                    alert('點餐成功！訂單 ID: ' + data.data.id);
+                    cart = [];
+                    updateCartUI();
+                } else {
+                    alert('點餐失敗: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Checkout error:', error);
+                alert('系統錯誤，請檢查後端日誌');
+            }
+        }
+
+        // Initialize
+        window.onload = init;
+    </script>
+    <style>
+        .remove-btn {
+            background: #ff5252;
+            color: white;
+            border: none;
+            padding: 2px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+            font-size: 12px;
+        }
+        .remove-btn:hover {
+            background: #d32f2f;
+        }
+        .empty-cart-msg {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+        }
+        .item-name {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+    </style>
+</body>
+</html>

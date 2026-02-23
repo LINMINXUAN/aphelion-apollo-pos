@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sunrise Bites - LINE 點餐</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="welcome-msg">Good morning, Morning Person!</div>
+      <h1>Sunrise Bites</h1>
+      <div class="search-container">
+        <input type="text" class="search-bar" placeholder="搜尋想吃的早餐..." />
+      </div>
+    </header>
+
+    <main>
+      <div class="category-scroll">
+        <div class="category-pill active">熱門商品</div>
+        <div class="category-pill">漢堡系列</div>
+        <div class="category-pill">手工蛋餅</div>
+        <div class="category-pill">嚴選飲品</div>
+        <div class="category-pill">吐司類</div>
+      </div>
+
+      <section class="product-grid">
+        <!-- 產品卡片 1 -->
+        <div class="product-card">
+          <div
+            class="product-image"
+            style="
+              background-image: url('https://images.unsplash.com/photo-1525351484163-7529414344d8?q=80&w=300&auto=format&fit=crop');
+            "
+          ></div>
+          <div class="product-info">
+            <div>
+              <div class="product-name">起司蛋堡</div>
+              <div class="product-price">$45</div>
+            </div>
+            <button class="add-btn">加入購物車</button>
+          </div>
+        </div>
+
+        <!-- 產品卡片 2 -->
+        <div class="product-card">
+          <div
+            class="product-image"
+            style="
+              background-image: url('https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?q=80&w=300&auto=format&fit=crop');
+            "
+          ></div>
+          <div class="product-info">
+            <div>
+              <div class="product-name">原味蛋餅</div>
+              <div class="product-price">$25</div>
+            </div>
+            <button class="add-btn">加入購物車</button>
+          </div>
+        </div>
+
+        <!-- 產品卡片 3 -->
+        <div class="product-card">
+          <div
+            class="product-image"
+            style="
+              background-image: url('https://images.unsplash.com/photo-1544787210-2827448b3040?q=80&w=300&auto=format&fit=crop');
+            "
+          ></div>
+          <div class="product-info">
+            <div>
+              <div class="product-name">大冰奶</div>
+              <div class="product-price">$25</div>
+            </div>
+            <button class="add-btn">加入購物車</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav">
+      <div class="nav-item active">
+        <span>🏠</span>
+        <span>精選菜單</span>
+      </div>
+      <div class="nav-item">
+        <span>📋</span>
+        <span>我的訂單</span>
+      </div>
+      <div class="nav-item" style="position: relative">
+        <span>🛒</span>
+        <span>購物車</span>
+        <div class="cart-badge">2</div>
+      </div>
+    </nav>
+
+    <script>
+      // Prototype logic: toggle category active state
+      const categories = document.querySelectorAll(".category-pill");
+      categories.forEach((el) => {
+        el.addEventListener("click", () => {
+          categories.forEach((c) => c.classList.remove("active"));
+          el.classList.add("active");
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sunrise Bites - 後台管理系統</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <aside class="admin-sidebar">
+      <div class="admin-logo">SUNRISE ADMIN</div>
+      <nav class="admin-nav">
+        <div class="admin-nav-item active">📊 數據總覽</div>
+        <div class="admin-nav-item">🍔 菜單管理</div>
+        <div class="admin-nav-item">📝 訂單紀錄</div>
+        <div class="admin-nav-item">📈 銷售報表</div>
+        <div class="admin-nav-item">⚙️ 系統設定</div>
+        <div style="margin-top: 2rem">
+          <a
+            href="http://localhost:5173"
+            target="_blank"
+            style="
+              display: block;
+              padding: 12px 24px;
+              color: #94a3b8;
+              text-decoration: none;
+              border-radius: 8px;
+              transition: all 0.2s;
+            "
+            onmouseover="this.style.background='rgba(255,255,255,0.05)';this.style.color='#fff'"
+            onmouseout="this.style.background='transparent';this.style.color='#94a3b8'"
+          >
+            📱 前往 POS 前台
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="admin-content">
+      <header class="admin-header">
+        <div>
+          <h1 style="font-size: 1.5rem; color: var(--text-head)">營運儀表板</h1>
+          <p style="color: var(--text-body); font-size: 0.875rem">
+            歡迎回來，今日營運狀況良好。
+          </p>
+        </div>
+        <div class="admin-user-info">
+          <span>店長: Wang Xiao Ming</span>
+        </div>
+      </header>
+
+      <section class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">今日營收 (TWD)</div>
+          <div class="stat-value">$12,450</div>
+          <div class="stat-trend">▲ 12% 較昨日增加</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">總訂單數</div>
+          <div class="stat-value">145</div>
+          <div class="stat-trend">▲ 5% 較昨日增加</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">客單價</div>
+          <div class="stat-value">$85.8</div>
+          <div class="stat-trend">▼ 2% 較昨日減少</div>
+        </div>
+      </section>
+
+      <section class="dashboard-grid">
+        <div class="card-panel">
+          <h3>銷售趨勢 (最近 7 天)</h3>
+          <div
+            style="
+              height: 200px;
+              background: #f1f5f9;
+              border-radius: 8px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: #94a3b8;
+            "
+          >
+            [ 圖表佔位符 - Chart.js 整合預留 ]
+          </div>
+        </div>
+        <div class="card-panel">
+          <h3>熱門銷售單品</h3>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>品名</th>
+                <th>數量</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>起司蛋堡</td>
+                <td>42</td>
+              </tr>
+              <tr>
+                <td>大冰奶</td>
+                <td>38</td>
+              </tr>
+              <tr>
+                <td>手工蛋餅</td>
+                <td>25</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
