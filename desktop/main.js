@@ -177,17 +177,19 @@ const createProduct = (data) => {
 };
 
 const updateProduct = (id, data) => {
+  const row = db.prepare('SELECT * FROM products WHERE id = ?').get(id);
+  if (!row) return null;
+  const merged = {
+    name: data.name !== undefined ? String(data.name).trim() : row.name,
+    description: data.description !== undefined ? (data.description || '') : row.description,
+    price: data.price !== undefined ? Number(data.price) : row.price,
+    category_id: data.categoryId !== undefined ? Number(data.categoryId) : row.category_id,
+    available: data.available !== undefined ? (data.available ? 1 : 0) : row.available,
+    image_url: data.imageUrl !== undefined ? (data.imageUrl || '') : row.image_url,
+  };
   db.prepare(
     'UPDATE products SET name = ?, description = ?, price = ?, category_id = ?, available = ?, image_url = ? WHERE id = ?'
-  ).run(
-    data.name.trim(),
-    data.description || '',
-    Number(data.price),
-    Number(data.categoryId),
-    data.available ? 1 : 0,
-    data.imageUrl || '',
-    id
-  );
+  ).run(merged.name, merged.description, merged.price, merged.category_id, merged.available, merged.image_url, id);
   return getProductById(id);
 };
 

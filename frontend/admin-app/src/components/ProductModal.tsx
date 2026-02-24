@@ -13,7 +13,6 @@ const productSchema = z.object({
   price: z.coerce.number().min(0.01, '價格必須大於0'),
   categoryId: z.coerce.number().min(1, '請選擇分類'),
   imageUrl: z.string().url('請輸入有效的圖片URL').or(z.literal('')),
-  available: z.boolean(),
 });
 
 type ProductFormData = z.infer<typeof productSchema>;
@@ -42,7 +41,6 @@ export default function ProductModal({ isOpen, onClose, product, categories }: P
       price: 0,
       categoryId: 1,
       imageUrl: '',
-      available: true,
     },
   });
 
@@ -55,7 +53,6 @@ export default function ProductModal({ isOpen, onClose, product, categories }: P
         price: product.price,
         categoryId: product.categoryId || 1,
         imageUrl: product.imageUrl || '',
-        available: product.available,
       });
     } else {
       reset({
@@ -64,7 +61,6 @@ export default function ProductModal({ isOpen, onClose, product, categories }: P
         price: 0,
         categoryId: 1,
         imageUrl: '',
-        available: true,
       });
     }
   }, [product, reset]);
@@ -72,9 +68,9 @@ export default function ProductModal({ isOpen, onClose, product, categories }: P
   const mutation = useMutation({
     mutationFn: (data: ProductFormData) => {
       if (isEdit) {
-        return productAPI.update(product.id, data);
+        return productAPI.update(product.id, { ...data, available: product.available });
       }
-      return productAPI.create(data);
+      return productAPI.create({ ...data, available: true });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] });
@@ -197,19 +193,6 @@ export default function ProductModal({ isOpen, onClose, product, categories }: P
             {errors.imageUrl && (
               <p className="text-rose-500 text-sm mt-1">{errors.imageUrl.message}</p>
             )}
-          </div>
-
-          {/* Available Toggle */}
-          <div className="flex items-center gap-3">
-            <input
-              {...register('available')}
-              type="checkbox"
-              id="available"
-              className="w-4 h-4 text-brand-500 border-sand-300 rounded focus:ring-brand-300 cursor-pointer"
-            />
-            <label htmlFor="available" className="text-sm font-medium text-ink-700 cursor-pointer">
-              上架販售
-            </label>
           </div>
 
           {/* Actions */}

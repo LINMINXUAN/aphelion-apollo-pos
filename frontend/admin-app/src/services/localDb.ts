@@ -199,12 +199,12 @@ export const localDb = {
       withState((state) => {
         const product = state.products.find((item) => item.id === id);
         if (!product) throw new Error('商品不存在');
-        product.name = data.name.trim();
-        product.description = data.description || '';
-        product.price = Number(data.price);
-        product.categoryId = Number(data.categoryId);
-        product.available = Boolean(data.available);
-        product.imageUrl = data.imageUrl || '';
+        if (data.name !== undefined) product.name = String(data.name).trim();
+        if (data.description !== undefined) product.description = data.description || '';
+        if (data.price !== undefined) product.price = Number(data.price);
+        if (data.categoryId !== undefined) product.categoryId = Number(data.categoryId);
+        if (data.available !== undefined) product.available = Boolean(data.available);
+        if (data.imageUrl !== undefined) product.imageUrl = data.imageUrl || '';
         const normalized = ensureCategoryName(state, product);
         Object.assign(product, normalized);
         return normalized;

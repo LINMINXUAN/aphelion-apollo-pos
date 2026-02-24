@@ -122,6 +122,12 @@ export const productAPI = {
       : useFile
         ? fileProductAPI.delete(id)
         : localProductAPI.delete(id),
+  toggleAvailable: (id: number, available: boolean) =>
+    dataMode === 'remote'
+      ? api.patch(`/admin/products/${id}/toggle`).then((r) => r)
+      : useFile
+        ? fileProductAPI.update(id, { available })
+        : localProductAPI.update(id, { available }),
 };
 
 export const categoryAPI = {

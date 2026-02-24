@@ -1,11 +1,16 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ShoppingBag, ClipboardList } from 'lucide-react';
 import { useProducts } from '../hooks/useProducts';
 import { useCategories } from '../hooks/useCategories';
 import ProductCard from '../components/ProductCard';
 import Cart from '../components/Cart';
+import OrdersPanel from '../components/OrdersPanel';
+
+type PosMode = 'menu' | 'orders';
 
 export default function MenuPage() {
+  const [posMode, setPosMode] = useState<PosMode>('menu');
   const [selectedCategory, setSelectedCategory] = useState<number | undefined>();
   const { data: categories, isLoading: categoriesLoading } = useCategories();
   const { data: products, isLoading: productsLoading } = useProducts();
@@ -64,7 +69,31 @@ export default function MenuPage() {
           )}
         </nav>
 
-        <div className="p-4 border-t border-sand-200 mt-auto">
+        <div className="p-4 border-t border-sand-200 space-y-2 mt-auto">
+          <div className="flex gap-2">
+            <button
+              onClick={() => setPosMode('menu')}
+              className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium transition-all border ${
+                posMode === 'menu'
+                  ? 'bg-brand-50 text-brand-700 border-brand-200'
+                  : 'bg-sand-100 hover:bg-sand-200 text-ink-600 border-sand-200'
+              }`}
+            >
+              <ShoppingBag size={18} />
+              點餐
+            </button>
+            <button
+              onClick={() => setPosMode('orders')}
+              className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium transition-all border ${
+                posMode === 'orders'
+                  ? 'bg-brand-50 text-brand-700 border-brand-200'
+                  : 'bg-sand-100 hover:bg-sand-200 text-ink-600 border-sand-200'
+              }`}
+            >
+              <ClipboardList size={18} />
+              訂單
+            </button>
+          </div>
           <Link
             to="/"
             className="flex items-center justify-center w-full py-2 bg-sand-100 hover:bg-sand-200 text-ink-600 rounded-lg text-sm transition-colors border border-sand-200"
@@ -77,12 +106,18 @@ export default function MenuPage() {
       <main className="flex-1 flex flex-col min-w-0 bg-sand-50">
         <div className="bg-white/80 border-b border-sand-200 px-6 py-4 flex justify-between items-center shadow-soft backdrop-blur">
           <h2 className="text-2xl font-semibold text-ink-900">
-            {selectedCategory
-              ? categories?.find((c) => c.id === selectedCategory)?.name || '商品列表'
-              : '全部商品'}
-            <span className="ml-3 text-lg font-normal text-ink-500">
-              ({filteredProducts?.length || 0})
-            </span>
+            {posMode === 'menu' ? (
+              <>
+                {selectedCategory
+                  ? categories?.find((c) => c.id === selectedCategory)?.name || '商品列表'
+                  : '全部商品'}
+                <span className="ml-3 text-lg font-normal text-ink-500">
+                  ({filteredProducts?.length || 0})
+                </span>
+              </>
+            ) : (
+              '訂單管理'
+            )}
           </h2>
           <Link
             to="/"
@@ -93,7 +128,9 @@ export default function MenuPage() {
         </div>
 
         <div className="flex-1 overflow-y-auto p-4 md:p-6">
-          {productsLoading ? (
+          {posMode === 'orders' ? (
+            <OrdersPanel />
+          ) : productsLoading ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
                 <div key={i} className="skeleton h-48 rounded-2xl"></div>

@@ -1,10 +1,9 @@
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Package, ShoppingCart, Settings, Monitor } from 'lucide-react';
+import { LayoutDashboard, Package, Settings, Monitor } from 'lucide-react';
 
 const menuItems = [
   { path: '/', icon: LayoutDashboard, label: '控制台' },
   { path: '/products', icon: Package, label: '產品管理' },
-  { path: '/orders', icon: ShoppingCart, label: '訂單管理' },
   { path: '/settings', icon: Settings, label: '系統設定' },
 ];
 

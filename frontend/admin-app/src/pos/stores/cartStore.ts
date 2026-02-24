@@ -25,8 +25,7 @@ export const useCartStore = create<CartStore>((set, get) => ({
       const index = state.items.findIndex((i) => i.productId === item.productId);
       if (index >= 0) {
         const items = [...state.items];
-        const current = items[index];
-        items[index] = { ...current, quantity: current.quantity + 1 };
+        items[index] = { ...items[index], quantity: items[index].quantity + 1 };
         return { items };
       }
       return { items: [...state.items, { ...item, quantity: 1 }] };

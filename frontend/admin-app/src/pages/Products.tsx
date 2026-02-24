@@ -38,6 +38,19 @@ export default function Products() {
     },
   });
 
+  const toggleAvailableMutation = useMutation({
+    mutationFn: async ({ id, available }: { id: number; available: boolean }) => {
+      await productAPI.toggleAvailable(id, available);
+    },
+    onSuccess: (_, vars) => {
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+      toast.success(vars.available ? '已上架' : '已下架');
+    },
+    onError: () => {
+      toast.error('更新失敗');
+    },
+  });
+
   const filteredProducts = products.filter(p =>
     p.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -185,9 +198,15 @@ export default function Products() {
                     NT$ {product.price.toFixed(0)}
                   </td>
                   <td className="px-4 py-3 border-b border-sand-100">
-                    <span className={`admin-chip ${product.available ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}`}>
+                    <button
+                      onClick={() => toggleAvailableMutation.mutate({ id: product.id, available: !product.available })}
+                      disabled={toggleAvailableMutation.isPending && toggleAvailableMutation.variables?.id === product.id}
+                      className={`admin-chip cursor-pointer hover:opacity-90 transition-opacity select-none disabled:opacity-50 ${
+                        product.available ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200' : 'bg-rose-100 text-rose-800 hover:bg-rose-200'
+                      }`}
+                    >
                       {product.available ? '上架中' : '已下架'}
-                    </span>
+                    </button>
                   </td>
                   <td className="px-4 py-3 border-b border-sand-100">
                     <div className="flex items-center justify-center gap-2">
