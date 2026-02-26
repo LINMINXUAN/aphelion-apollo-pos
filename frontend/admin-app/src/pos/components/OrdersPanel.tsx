@@ -67,7 +67,10 @@ export default function OrdersPanel() {
   const processedOrders = orders.filter((o) => !IN_PROGRESS_STATUSES.includes(o.status));
 
   const OrderRow = ({ order }: { order: Order }) => (
-    <tr className="hover:bg-sand-50 transition-colors duration-150">
+    <tr
+      onClick={() => setSelectedOrder(order)}
+      className="hover:bg-sand-50 transition-colors duration-150 cursor-pointer"
+    >
       <td className="px-4 py-3 text-sm text-ink-900 border-b border-sand-100 font-mono">
         #{order.id}
       </td>
@@ -88,7 +91,7 @@ export default function OrdersPanel() {
       <td className="px-4 py-3 text-sm text-ink-900 border-b border-sand-100 text-right font-mono">
         NT$ {order.totalAmount.toFixed(0)}
       </td>
-      <td className="px-4 py-3 border-b border-sand-100">
+      <td className="px-4 py-3 border-b border-sand-100" onClick={(e) => e.stopPropagation()}>
         <div className="flex flex-wrap gap-1">
           {statusOptions.map((option) => (
             <button
@@ -109,15 +112,8 @@ export default function OrdersPanel() {
           ))}
         </div>
       </td>
-      <td className="px-4 py-3 border-b border-sand-100">
-        <div className="flex items-center justify-center">
-          <button
-            onClick={() => setSelectedOrder(order)}
-            className="p-2 hover:bg-sand-100 rounded-lg cursor-pointer transition-colors"
-          >
-            <Eye size={16} className="text-brand-600" />
-          </button>
-        </div>
+      <td className="px-4 py-3 border-b border-sand-100 text-center">
+        <Eye size={16} className="inline-block text-brand-600 opacity-70" title="查看詳情" />
       </td>
     </tr>
   );
@@ -130,7 +126,7 @@ export default function OrdersPanel() {
       <th className="px-4 py-3 border-b border-sand-200">桌號</th>
       <th className="px-4 py-3 border-b border-sand-200 text-right">總額</th>
       <th className="px-4 py-3 border-b border-sand-200">狀態</th>
-      <th className="px-4 py-3 border-b border-sand-200 text-center w-14">操作</th>
+      <th className="px-4 py-3 border-b border-sand-200 text-center w-14" title="點擊整列可查看詳情">操作</th>
     </tr>
   );
 
